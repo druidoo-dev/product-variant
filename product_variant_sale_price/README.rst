@@ -23,7 +23,7 @@ Product Variant Sale Price
     :target: https://runbot.odoo-community.org/runbot/137/12.0
     :alt: Try me on Runbot
 
-|badge1| |badge2| |badge3| |badge4| |badge5| 
+|badge1| |badge2| |badge3| |badge4| |badge5|
 
 This module allows to handle sale price at product variant level
 (product.product) instead of product level (product.template), which is the
@@ -63,6 +63,7 @@ Contributors
 * Alex Comba <alex.comba@agilebg.com>
 * Fabien Bourgeois <fabien@yaltik.com>
 * Vicent Cubells <info@obertix.net>
+* Druidoo (<https://www.druidoo.io>)
 
 Maintainers
 ~~~~~~~~~~~

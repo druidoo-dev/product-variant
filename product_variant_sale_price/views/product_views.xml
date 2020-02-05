@@ -1,39 +1,57 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
 
-    <record id="product_template_form_view" model="ir.ui.view">
+    <record id="view_product_template_form_view_inherited_pvsp" model="ir.ui.view">
         <field name="name">product.template.form.inherited</field>
         <field name="model">product.template</field>
         <field name="inherit_id" ref="product.product_template_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='list_price']" position="attributes">
-                <attribute name="attrs">{'invisible': [
-                    ('product_variant_count', '>', 1)
-                    ]}</attribute>
+            <field name="list_price" position="attributes">
+                <attribute name="attrs">{'invisible': [('product_variant_count', '>', 1)]}</attribute>
+            </field>
+            <xpath expr="//button[@name='open_pricelist_rules']" position="attributes">
+                <attribute name="attrs">{'invisible': [('product_variant_count', '>', 1)]}</attribute>
+            </xpath>
+            <xpath expr="//button[@name='open_pricelist_rules']" position="after">
+                <div attrs="{'invisible': [('product_variant_count', '&lt;=', 1)]}">
+                    <p>Prices are managed at <button name="%(product.product_variant_action)d" type="action" class="oe_link" string="variants"/></p>
+                </div>
+            </xpath>
+        </field>
+    </record>
+
+    <record model="ir.ui.view" id="view_product_template_kanban_inherited_pvsp">
+        <field name="name">Product Template Kanban Variant Price</field>
+        <field name="model">product.template</field>
+        <field name="inherit_id" ref="product.product_template_kanban_view"/>
+        <field name="arch" type="xml">
+            <xpath expr="//div[hasclass('oe_kanban_global_click')]/div[hasclass('oe_kanban_details')]/ul" position="attributes">
+                <attribute name="attrs">{'invisible': [('product_variant_count', '>', 1)]}</attribute>
             </xpath>
         </field>
     </record>
 
     <record id="product_normal_form_view_default_check" model="ir.ui.view">
         <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_normal_form_view" />
+        <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="arch" type="xml">
-            <xpath expr="//field[@name='uom_id']" position="after">
-                <field name="fix_price"
-                       attrs="{'invisible': [('product_variant_count', '=', 1)]}"/>
-            </xpath>
-        </field>
-    </record>
-    <record id="product_variant_easy_edit_price_view" model="ir.ui.view">
-        <field name="model">product.product</field>
-        <field name="inherit_id" ref="product.product_variant_easy_edit_view" />
-        <field name="arch" type="xml">
-            <xpath expr="//field[@name='lst_price']" position="after">
-                <field name="fix_price"
-                       attrs="{'invisible': [('product_variant_count', '=', 1)]}"/>
-            </xpath>
+            <field name="uom_id" position="after">
+                <field name="fix_price" attrs="{'invisible': [('product_variant_count', '=', 1)]}"/>
+            </field>
         </field>
     </record>
 
+    <record id="product_variant_easy_edit_price_view" model="ir.ui.view">
+        <field name="model">product.product</field>
+        <field name="inherit_id" ref="product.product_variant_easy_edit_view"/>
+        <field name="arch" type="xml">
+            <field name="lst_price" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </field>
+            <field name="lst_price" position="after">
+                <field name="fix_price" widget='monetary' options="{'currency_field': 'currency_id', 'field_digits': True}"/>
+            </field>
+        </field>
+    </record>
 
 </odoo>

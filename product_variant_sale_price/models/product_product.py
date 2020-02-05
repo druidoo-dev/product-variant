@@ -1,4 +1,5 @@
 # Copyright 2016 Sergio Teruel <sergio.teruel@tecnativa.com>
+# Copyright (C) 2020-Today: Druidoo (<https://www.druidoo.io>)
 # License AGPL-3 - See http://www.gnu.org/licenses/agpl-3.0.html
 
 from odoo import api, fields, models
@@ -17,7 +18,6 @@ class ProductTemplate(models.Model):
         product_tmpl._update_fix_price(vals)
         return product_tmpl
 
-    @api.multi
     def write(self, vals):
         res = super(ProductTemplate, self).write(vals)
         if self.env.context.get("skip_update_fix_price", False):
@@ -30,7 +30,6 @@ class ProductTemplate(models.Model):
 class ProductProduct(models.Model):
     _inherit = "product.product"
 
-    @api.multi
     @api.depends("fix_price")
     def _compute_lst_price(self):
         uom_model = self.env["uom.uom"]
@@ -42,7 +41,6 @@ class ProductProduct(models.Model):
                 )
             product.lst_price = price
 
-    @api.multi
     def _compute_list_price(self):
         uom_model = self.env["uom.uom"]
         for product in self:
@@ -53,7 +51,6 @@ class ProductProduct(models.Model):
                 )
             product.list_price = price
 
-    @api.multi
     def _inverse_product_lst_price(self):
         uom_model = self.env["uom.uom"]
         for product in self:
@@ -80,4 +77,4 @@ class ProductProduct(models.Model):
         compute="_compute_lst_price", inverse="_inverse_product_lst_price"
     )
     list_price = fields.Float(compute="_compute_list_price")
-    fix_price = fields.Float(string="Fix Price")
+    fix_price = fields.Float()
